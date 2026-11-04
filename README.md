@@ -70,7 +70,7 @@ iverilog -g2012 -o sim_adv3.vvp rtl/advanced_task3.v sim/advanced_task3_tb.v && 
 
 ## 快速烧录（无需重新综合）
 
-仓库中的 `bitstream/hdmi_top.sbit` 是最终 21:26 全流程比特流，可直接烧录：
+仓库中的 `bitstream/hdmi_top.sbit` 可直接烧录：
 
 - 器件：PG2L100H-6IFBG676（盘古 100Pro+）
 - SHA256：`c17e8ef6a360ec514ed2a06db9dcb2f2b6c6c3b7da02ec72dc4aa507ac8342a5`
