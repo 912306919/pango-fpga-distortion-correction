@@ -4,9 +4,6 @@
 
 本项目在盘古 100Pro+ 开发板上实现 **1280×720@30fps** 的畸变矫正链路：OV5640 DVP 采集 → DDR3 帧缓存 → Brown-Conrady 反向映射 → 4-bank 行缓存 + 双线性重采样 → OSD → HDMI。高阶部分包含 JY61P IMU 仿射姿态补偿、5 档自适应 Gamma，以及高阶任务二的 HIT/MISS/BLK 性能面板。
 
-> **重要：本仓库不包含厂商 IP 源码和厂商 demo 框架源码，但包含可直接烧录的最终比特流。**
-> 完整工程重建依赖 Pango PDS 生成的 IP（`ipcore/`、`source/rtl/DDR3_50H`）以及 Meyesemi 的 `HDMI_DDR3_OV5640_100H` demo 框架（`cmos_8_16bit.v`、`fram_buf.v`、`sync_vg.v`、`ms72xx_ctl.v` 等）。这些源码带有厂商 proprietary 声明，不能公开转载；本仓库只包含作者编写的算法模块、测试、约束、文档，以及一个用于现场演示的最终比特流。比特流可直接烧录，源码重建需自行向板卡厂商获取官方 demo 和 PDS。详见 [NOTICE.md](NOTICE.md)。
-
 ## 功能
 
 - **基础任务一**：OV5640 DVP 8bit 采集、DDR3 帧缓存、HDMI 720P30 显示。
@@ -59,11 +56,6 @@ iverilog -g2012 -o sim_warp.vvp rtl/distortion_map.v rtl/distortion_line_buffer.
 iverilog -g2012 -o sim_adv3.vvp rtl/advanced_task3.v sim/advanced_task3_tb.v && vvp sim_adv3.vvp
 ```
 
-注意：当前 testbench 有两处已知问题（RTL 本身无问题）：
-
-- `distortion_map_tb` 的 calibrated DUT 需要补齐 `dyn_en`、`k1_dyn`…`p2_dyn`、`in_range` 端口，否则 calibrated 输出为 x、误判 PASS。
-- `advanced_task3_tb` 的强光平均亮度期望值写的是 236，但 `CODE_GLARE=0xDF5C` 的实际亮度是 230（RTL 输出 230 正确）；把期望范围改成 226~234 即可。
-
 ## 实测结果（最终 21:26 全流程，PDS 2022.2-SP6.4）
 
 | 项目 | 数值 |
@@ -85,8 +77,6 @@ iverilog -g2012 -o sim_adv3.vvp rtl/advanced_task3.v sim/advanced_task3_tb.v && 
 - PDS → Tools → Configuration / Programmer → 选择 `bitstream/hdmi_top.sbit` → JTAG 下载
 - 摄像头接 FMC J2；J20=ADJ、J24=2V5；HDMI OUT 接显示或采集卡
 - 上电后保持静止约 5s，等待 IMU 零点标定完成
-
-注意：比特流可直接烧录演示；但要从源码重新综合，仍需厂商 demo 和 Pango IP 源码。
 
 ## 已知限制
 
