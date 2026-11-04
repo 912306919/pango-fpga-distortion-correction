@@ -9,7 +9,7 @@
 - **基础任务一**：OV5640 DVP 8bit 采集、DDR3 帧缓存、HDMI 720P30 显示。
 - **基础任务二**：Brown-Conrady 径向（k1/k2）+ 切向（p1/p2）畸变模型，反向映射，Q12.4 源坐标（1/16 像素）。
 - **基础任务三**：128 行 4-bank 行缓存，一拍读出 2×2 邻域；双线性插值，`NEAREST` 参数可旁路做 A/B。
-- **高阶任务一**：JY61P 六轴 IMU + 仿射补偿（roll/yaw/pitch），OLED/HDMI 角度 OSD；受 128 行缓存限制，有效 roll 约 ±3.5°，更大角度预留 tile 扩展。
+- **高阶任务一**：JY61P 六轴 IMU + 仿射补偿（roll/yaw/pitch），OLED/HDMI 角度 OSD。
 - **高阶任务二**：13 级流水线 + 性能面板（OUTPUT FPS、HIT/MISS/BLK、LAT 13 CLK）。
 - **高阶任务三**：5 档自适应 Gamma（NIGHT/DIM/NORMAL/BRIGHT/GLARE），阈值 50/90/135/170、高光占比 5%，屏幕显示 Y/G 判档读数。
 
