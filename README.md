@@ -41,7 +41,7 @@ gamma_lut_hex.txt
 ## 集成到官方工程
 
 1. 从板卡厂商获取 **Meyesemi HDMI_DDR3_OV5640_100H** 官方 demo（盘古 100Pro+ / FMC-LPC-IO 子卡 / OV5640）和 Pango PDS 2022.2-SP6.4。
-2. 在官方 `.pds` 工程中加入 `rtl/`、`imu/`、`sim/` 下的文件；官方顶层 `hdmi_top.v` 需要按本项目的流水线接入（本仓库不包含该顶层，因为它基于厂商 demo）。
+2. 在官方 `.pds` 工程中加入 `rtl/`、`imu/`、`sim/` 下的文件；官方顶层 `hdmi_top.v` 需要按本项目的流水线接入。
 3. 数据流：`OV5640 → cmos_8_16bit → fram_buf/DDR3 → affine_map → distortion_map → distortion_line_buffer → bilinear_interp → advanced_task3 → OSD → MS7200`。
 4. 合并 `constraints/hdmi_top.fdc` 中的引脚/时序约束；摄像头接 FMC J2，J20=ADJ、J24=2V5。
 5. 关键按键（物理丝印）：KEY(C22)=原图/矫正；KEY1(C23)=高阶一；KEY2(B22)=高阶三；KEY3(A22)=高阶二性能面板。
@@ -56,7 +56,7 @@ iverilog -g2012 -o sim_warp.vvp rtl/distortion_map.v rtl/distortion_line_buffer.
 iverilog -g2012 -o sim_adv3.vvp rtl/advanced_task3.v sim/advanced_task3_tb.v && vvp sim_adv3.vvp
 ```
 
-## 实测结果（最终 21:26 全流程，PDS 2022.2-SP6.4）
+## 实测结果
 
 | 项目 | 数值 |
 |---|---|
@@ -77,13 +77,6 @@ iverilog -g2012 -o sim_adv3.vvp rtl/advanced_task3.v sim/advanced_task3_tb.v && 
 - PDS → Tools → Configuration / Programmer → 选择 `bitstream/hdmi_top.sbit` → JTAG 下载
 - 摄像头接 FMC J2；J20=ADJ、J24=2V5；HDMI OUT 接显示或采集卡
 - 上电后保持静止约 5s，等待 IMU 零点标定完成
-
-## 已知限制
-
-- 128 行行缓存只支持 roll 约 ±3.5°，更大角度需要从 DDR3 分块反向取点的 tile 架构。
-- 高阶任务二面板的 `LAT 13 CLK` 是 `DATA_LATENCY=13` 的设计常量，其余帧率/HIT/MISS/BLK 为每帧实时统计。
-- 高阶二/三保持标定常量、不跟随 IMU；姿态补偿仅在高阶任务一使能。
-- OV5640 默认开启 AEC，强光判据以高光占比 5% 为主；现场可用第二行 G 读数微调 `BR_GLARE`。
 
 ## 许可与第三方声明
 
