@@ -38,3 +38,6 @@ logbackup/
 .vscode/
 __pycache__/
 *.pyc
+
+# Final bitstream is intentionally published for direct flashing
+!bitstream/hdmi_top.sbit

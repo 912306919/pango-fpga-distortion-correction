@@ -12,7 +12,9 @@ materials:
   `cmos_8_16bit.v`, `fram_buf.v`, `sync_vg.v`, `ms7200_ctl.v`, `ms72xx_ctl.v`,
   `rd_buf.v`, `wr_buf.v`, `reg_config.v`, and related board/demo files.
 - Board schematics, datasheets, and the competition guide PDFs.
-- The final `.sbit` bitstream (it contains vendor IP configuration).
+- Vendor IP **source** is not included. The final `.sbit` bitstream **is** included
+  in `bitstream/hdmi_top.sbit` for evaluation/demo; it was generated from the design
+  and may contain vendor IP configuration. Use it under the vendor's license.
 
 To build the complete project, obtain the official demo and PDS from the board
 vendor (Meyesemi / Pango) and use them under the vendor's license. The RTL in
